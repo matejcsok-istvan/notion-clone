@@ -8,7 +8,6 @@ import {
   redo,
 } from "y-prosemirror";
 import { NextPage } from "next";
-import "@blocknote/core/style.css";
 import { usePathname } from "next/navigation";
 import { getYjsDoc } from "@syncedstore/core";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -18,6 +17,22 @@ import { keymap } from "prosemirror-keymap";
 import { exampleSetup } from "prosemirror-example-setup";
 import { EditorState } from "prosemirror-state";
 import { EditorView } from "prosemirror-view";
+import { SidebarTree } from "@/app/tree/Tree";
+import styled from "styled-components";
+
+const Root = styled.div`
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 20rem auto;
+  height: 100%;
+  width: 100%;
+`;
+
+const Editor = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+`;
 
 const DocPage: NextPage = () => {
   const pathname = usePathname();
@@ -25,7 +40,7 @@ const DocPage: NextPage = () => {
   console.log({ docId });
 
   const { syncedState, provider } = useSyncStore(docId);
-  console.log(getYjsDoc(syncedState).toJSON());
+  // console.log(getYjsDoc(syncedState).toJSON());
 
   const doc = useMemo(() => {
     return getYjsDoc(syncedState).getXmlFragment("prosemirror");
@@ -70,7 +85,12 @@ const DocPage: NextPage = () => {
     };
   }, [provider]);
 
-  return <div ref={editorRef} />;
+  return (
+    <Root>
+      <SidebarTree />
+      <Editor ref={editorRef} />
+    </Root>
+  );
 };
 
 export default DocPage;

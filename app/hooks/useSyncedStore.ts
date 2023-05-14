@@ -32,6 +32,7 @@ export const useSyncStore = (docId?: string) => {
       url: "ws://127.0.0.1:8080",
       name: docId || "default",
       document: ydoc,
+      token: "notion-clone",
     });
   }, [docId, ydoc]);
 
